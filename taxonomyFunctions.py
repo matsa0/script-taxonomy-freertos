@@ -44,21 +44,40 @@ class TaxonomyFunctions:
 
         for severity in errorTags:
             severities.add(severity.get('severity'))
-        print(severities)
 
-        lengthSeverities = len(severities)
-        return lengthSeverities;
+        return severities;
 
+    def listTypesBySeverity(self, errorTags, severityTarget):
+        typesBySeverity = {}
+        validSeverities = self.listSeverities(errorTags)
+        severityTarget = severityTarget.lower() 
+
+        if severityTarget not in validSeverities:
+            print("\n")
+            print(f"***{severityTarget} is not present in severities!***")
+
+        for error in errorTags:
+            severity = error.get('severity')
+            type = error.get('id')
+
+            if severity == severityTarget:
+                if type in typesBySeverity:
+                    typesBySeverity[type] += 1 #key type = value
+                else:
+                    typesBySeverity[type] = 1
+
+        return typesBySeverity
 
     def listTypes(self, errorTags):
-        categories = set()
+        types = set()
 
-        for category in errorTags:
-            categories.add(category.get('id')) #id == type
-        print(categories)
+        for type in errorTags:
+            types.add(type.get('id')) #id == type
+        print(types)
 
-        lengthTypes = len(categories)
-        return lengthTypes;
+        lengthTypes = len(types)
+
+        return lengthTypes, types;
 
     def printSeveritiesOccurrences(self, errorTags):
         countWarning, countStyle, countPerformance, countPortability, countInformation, countError = self.countSeveritiesOccurrences(errorTags)
