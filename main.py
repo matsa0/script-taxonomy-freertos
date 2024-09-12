@@ -7,6 +7,7 @@ xmlRoot = tf.findElementRoot("logAllErrorsFreeRTOS.xml")
 errorsTags = tf.findErrorTags(xmlRoot)
 
 lengthOfTypes, types = tf.listTypes(errorsTags)
+print("FreeRTOS types errors: ", types)
 print("\nFreeRTOS types count: ", lengthOfTypes)
 
 
@@ -32,5 +33,15 @@ print("\n***Error Types: " , errorTypes)
 
 print("\n")
 
-print("Occurrences of each severity:\n ")
-tf.printSeveritiesOccurrences(errorsTags)
+
+print ("Occurrences of each severity: \n")
+warningSev = tf.countSeverityOccurrences(errorsTags, "warning")
+print("Warnings issues: ", warningSev)
+styleSev = tf.countSeverityOccurrences(errorsTags, "style")
+print("Styles issues: ", styleSev)
+performanceSev = tf.countSeverityOccurrences(errorsTags, "performance")
+print("Performances issues: ", performanceSev)
+portabilitySev = tf.countSeverityOccurrences(errorsTags, "portability")
+print("Portabilities issues: ", portabilitySev)
+errorSev = tf.countSeverityOccurrences(errorsTags, "error")
+print("Error issues: ", errorSev)

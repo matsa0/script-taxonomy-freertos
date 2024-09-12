@@ -1,31 +1,20 @@
 import xml.etree.ElementTree as ET
 
 class TaxonomyFunctions:
-    def countSeveritiesOccurrences(self, errorTags):
-        countWarning = 0
-        countStyle = 0
-        countPerformance = 0
-        countPortability = 0
-        countInformation = 0
-        countError = 0
+    def countSeverityOccurrences(self, errorTags, severity):
+        severityTypes = self.listSeverities(errorTags)
+        if severity not in severityTypes:
+            print("Error! Type a valid severity.")
+    
+        count = 0
+        
+        for errorTag in errorTags:
+            severityType = errorTag.get('severity')   
 
-        for severity in errorTags:
-            severityType = severity.get('severity')
+            if severity == severityType:
+                count += 1
 
-            if severityType == "warning":
-                countWarning += 1
-            if severityType == "style":
-                countStyle += 1
-            if severityType == "performance":
-                countPerformance += 1
-            if severityType == "portability":
-                countPortability += 1
-            if severityType == "information":
-                countInformation += 1
-            if severityType == "error":
-                countError += 1
-
-        return countWarning, countStyle, countPerformance, countPortability, countInformation, countError;
+        return count;
 
     def findErrorTags(self, root):
         return root.findall(".//error")
@@ -69,15 +58,21 @@ class TaxonomyFunctions:
         return typesBySeverity
 
     def listTypes(self, errorTags):
-        types = set()
+        typesSet = set()
+        typesDict = {} 
 
-        for type in errorTags:
-            types.add(type.get('id')) #id == type
-        print(types)
+        for errorTag in errorTags:
+            type = errorTag.get('id') #id == type
 
-        lengthTypes = len(types)
+            if type in typesDict:
+                typesDict[type] += 1 
+            else:
+                typesDict[type] = 1
 
-        return lengthTypes, types;
+            typesSet.add(type) 
+
+        lengthTypes = len(typesSet)
+        return lengthTypes, typesDict;
 
     def printSeveritiesOccurrences(self, errorTags):
         countWarning, countStyle, countPerformance, countPortability, countInformation, countError = self.countSeveritiesOccurrences(errorTags)
